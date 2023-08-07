@@ -34,12 +34,15 @@ function App() {
           path="/add"
         />
         <Route
+          path="/edit/:userId"
+          loader={({ params }) => {
+            console.log("route file", params.userId); // "hotspur"
+          }}
           element={
             <LayoutWrapper>
               <Form />
             </LayoutWrapper>
           }
-          path="/edit/:id"
         />
       </Routes>
     </BrowserRouter>

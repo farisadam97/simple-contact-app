@@ -1,4 +1,5 @@
 import ListContacts from "../components/ContactList/ListContacts";
+import SkeletonList from "../components/Skeleton/List";
 import { useEffect, useState } from "react";
 import { getContacts, deleteContact } from "../api/contact";
 import { CircularProgress, Container } from "@mui/material";
@@ -38,7 +39,7 @@ const ContactList = () => {
           "Something Error"
         )
       ) : (
-        <CircularProgress />
+        <SkeletonList />
       )}
     </Container>
   );

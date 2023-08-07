@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
 import {
   TextField,
@@ -10,9 +10,11 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import { postContact } from "../api/contact";
+import { postContact, getContact, putContact } from "../api/contact";
+import { useEffect } from "react";
 const Form = () => {
-  const match = useLocation();
+  const location = useLocation();
+  const { userId } = useParams();
   const navigate = useNavigate();
   const avatarImages = [
     "https://thypix.com/wp-content/uploads/2021/11/sponge-bob-profile-picture-thypix-52-700x628.jpg",
@@ -33,12 +35,28 @@ const Form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
+    setValue,
     watch,
   } = methods;
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const getContactDetail = async (id) => {
+    getContact(id).then((res) => {
+      const data = res.data.data;
+      setValue("firstName", data.firstName);
+      setValue("lastName", data.lastName);
+      setValue("age", data.age);
+      setValue("photo", data.photo);
+    });
+  };
+
+  useEffect(() => {
+    if (location.pathname.startsWith("/edit/") && userId) {
+      getContactDetail(userId);
+    }
+  }, []);
+
+  const postData = async (data) => {
     postContact(data)
       .then(() => {
         navigate("/");
@@ -46,6 +64,24 @@ const Form = () => {
       .catch((error) => {
         alert(error.message);
       });
+  };
+
+  const updateData = async (id, data) => {
+    putContact(id, data)
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
+
+  const onSubmit = async (data) => {
+    if (userId) {
+      updateData(userId, data);
+    } else {
+      postData(data);
+    }
   };
   return (
     <FormProvider {...methods}>
@@ -137,7 +173,16 @@ const Form = () => {
             paddingBlock: 4,
           }}
         >
-          <Button fullWidth sx={{ marginBlock: "3px" }} variant="outlined">
+          <Button
+            fullWidth
+            sx={{ marginBlock: "3px" }}
+            disabled={isSubmitting}
+            variant="outlined"
+            onClick={(event) => {
+              event.preventDefault();
+              navigate("/");
+            }}
+          >
             Cancel
           </Button>
           <Button
@@ -145,8 +190,9 @@ const Form = () => {
             sx={{ marginBlock: "3px" }}
             variant="contained"
             type="submit"
+            disabled={isSubmitting || !isDirty}
           >
-            Submit
+            {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
         </Container>
       </form>
