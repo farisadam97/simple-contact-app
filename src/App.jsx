@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ContactList from "./pages";
-import DetailContact from "./pages/detail";
-import Form from "./pages/form";
+import DetailContact from "./pages/Detail";
+import Form from "./pages/Form";
 import LayoutWrapper from "./components/Layout";
 
 function App() {
@@ -31,7 +31,15 @@ function App() {
               <Form />
             </LayoutWrapper>
           }
-          path="/form"
+          path="/add"
+        />
+        <Route
+          element={
+            <LayoutWrapper>
+              <Form />
+            </LayoutWrapper>
+          }
+          path="/edit/:id"
         />
       </Routes>
     </BrowserRouter>

@@ -5,6 +5,8 @@ const CustContainer = styled(Container)({
   width: "480px",
   backgroundColor: "#fafafa",
   height: "100vh",
+  display: "flex",
+  flexDirection: "column",
 });
 const LayoutWrapper = (prop) => {
   return (
