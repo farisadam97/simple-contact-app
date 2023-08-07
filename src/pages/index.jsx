@@ -2,7 +2,7 @@ import ListContacts from "../components/ContactList/ListContacts";
 import SkeletonList from "../components/Skeleton/List";
 import { useEffect, useState } from "react";
 import { getContacts, deleteContact } from "../api/contact";
-import { CircularProgress, Container } from "@mui/material";
+import { Container } from "@mui/material";
 const ContactList = () => {
   const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
