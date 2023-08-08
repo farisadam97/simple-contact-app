@@ -98,11 +98,11 @@ const Form = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="body1">Select Image</Typography>
+            <Typography variant="body1">Select Your Photo</Typography>
             <Select
               fullWidth
               {...register("photo", {
-                required: "Please select an image",
+                required: "Please select an photo",
               })}
               value={watch("photo")}
             >

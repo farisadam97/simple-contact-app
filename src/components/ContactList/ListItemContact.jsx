@@ -11,10 +11,26 @@ import {
 import { MoreVertRounded } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DialogComponent from "../Dialog";
 
 const ListItemContact = (prop) => {
   const { data, onDelete } = prop;
   const name = `${data.firstName} ${data.lastName}`;
+  const [openDialog, setOpenDialog] = useState(false);
+  const [_anchorUnassignEl, setAnchorUnassignEl] = useState(null);
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleCloseMenu = () => {
+    setAnchorUnassignEl(null);
+  };
+  const descriptionContent = `Are you sure you want to delete this account from your contact ? 
+`;
 
   const navigate = useNavigate();
 
@@ -25,6 +41,12 @@ const ListItemContact = (prop) => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleDelete = async () => {
+    await onDelete(data.id);
+    handleCloseDialog();
+    handleCloseMenu();
+    handleClose();
   };
   return (
     <ListItem
@@ -107,11 +129,20 @@ const ListItemContact = (prop) => {
             key={"Delete"}
             onClick={(event) => {
               event.preventDefault();
-              onDelete(data.id);
+              // onDelete(data.id);
+              handleClickOpenDialog();
+              handleCloseMenu();
             }}
           >
             Delete
           </MenuItem>
+          <DialogComponent
+            title={`Delete contact ${data.firstName} ${data.lastName}?`}
+            content={descriptionContent}
+            onClickPrimary={handleDelete}
+            onClickSecondary={handleCloseDialog}
+            open={openDialog}
+          />
         </Menu>
       </>
     </ListItem>

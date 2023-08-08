@@ -1,13 +1,16 @@
 import ListContacts from "../components/ContactList/ListContacts";
 import SkeletonList from "../components/Skeleton/List";
+import AlertComponent from "../components/Alert";
 import { useEffect, useState } from "react";
 import { getContacts, deleteContact } from "../api/contact";
 import { Container } from "@mui/material";
 const ContactList = () => {
   const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState();
 
-  function getAllContact() {
+  const getAllContact = async () => {
+    setIsLoading(true);
     getContacts()
       .then((res) => {
         const { data } = res.data;
@@ -15,23 +18,46 @@ const ContactList = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        alert(error.message);
+        setAlertMessage({
+          type: "error",
+          title: "Error",
+          content: "Something wrong",
+        });
         setIsLoading(false);
       });
-  }
+  };
 
-  function deleteContactById(id) {
-    deleteContact(id).then(() => {
-      getAllContact();
-    });
-  }
+  const deleteContactById = async (id) => {
+    deleteContact(id)
+      .then(() => {
+        getAllContact();
+      })
+      .catch((error) => {
+        setAlertMessage({
+          type: "error",
+          title: "Error",
+          content: "Something wrong",
+        });
+      });
+  };
   useEffect(() => {
-    setIsLoading(true);
     getAllContact();
   }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setAlertMessage();
+    }, 3000);
+  }, [alertMessage]);
 
   return (
     <Container disableGutters sx={{ flex: 1, overflow: "auto" }}>
+      {alertMessage && (
+        <AlertComponent
+          type={alertMessage.type}
+          title={alertMessage.title}
+          content={alertMessage.content}
+        />
+      )}
       {!isLoading ? (
         contacts.length > 0 ? (
           <ListContacts contacts={contacts} onDelete={deleteContactById} />
