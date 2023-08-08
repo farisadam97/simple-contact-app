@@ -26,9 +26,6 @@ function App() {
         />
         <Route
           path="/edit/:userId"
-          loader={({ params }) => {
-            console.log("route file", params.userId); // "hotspur"
-          }}
           element={
             <LayoutWrapper>
               <FormComponent />
