@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ContactList from "./pages";
-import Form from "./pages/Form";
+import FormComponent from "./pages/Form";
 import LayoutWrapper from "./components/Layout";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
         <Route
           element={
             <LayoutWrapper>
-              <Form />
+              <FormComponent />
             </LayoutWrapper>
           }
           path="/add"
@@ -31,7 +31,7 @@ function App() {
           }}
           element={
             <LayoutWrapper>
-              <Form />
+              <FormComponent />
             </LayoutWrapper>
           }
         />

@@ -1,3 +1,4 @@
+import React from "react";
 import ListContacts from "../components/ContactList/ListContacts";
 import SkeletonList from "../components/Skeleton/List";
 import AlertComponent from "../components/Alert";

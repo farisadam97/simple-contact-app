@@ -1,3 +1,4 @@
+import React from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
 import {
@@ -11,11 +12,15 @@ import {
   MenuItem,
 } from "@mui/material";
 import { postContact, getContact, putContact } from "../api/contact";
-import { useEffect } from "react";
-const Form = () => {
+import { useEffect, useState } from "react";
+import AlertComponent from "../components/Alert";
+
+const FormComponent = () => {
   const location = useLocation();
   const { userId } = useParams();
   const navigate = useNavigate();
+  const [alertMessage, setAlertMessage] = useState();
+
   const avatarImages = [
     "https://thypix.com/wp-content/uploads/2021/11/sponge-bob-profile-picture-thypix-52-700x628.jpg",
     "https://thypix.com/wp-content/uploads/2021/11/sponge-bob-profile-picture-thypix-124-680x700.jpg",
@@ -62,7 +67,11 @@ const Form = () => {
         navigate("/");
       })
       .catch((error) => {
-        alert(error.message);
+        setAlertMessage({
+          type: "error",
+          title: "Error",
+          content: "Something wrong",
+        });
       });
   };
 
@@ -72,7 +81,11 @@ const Form = () => {
         navigate("/");
       })
       .catch((error) => {
-        alert(error.message);
+        setAlertMessage({
+          type: "error",
+          title: "Error",
+          content: "Something wrong",
+        });
       });
   };
 
@@ -83,12 +96,26 @@ const Form = () => {
       postData(data);
     }
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setAlertMessage();
+    }, 3000);
+  }, [alertMessage]);
+
   return (
     <FormProvider {...methods}>
       <form
         style={{ display: "flex", flexDirection: "column" }}
         onSubmit={handleSubmit(onSubmit)}
       >
+        {alertMessage && (
+          <AlertComponent
+            type={alertMessage.type}
+            title={alertMessage.title}
+            content={alertMessage.content}
+          />
+        )}
         <Grid container rowSpacing={3} justifyContent="center">
           <Grid item xs={"auto"}>
             <Avatar
@@ -200,4 +227,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormComponent;

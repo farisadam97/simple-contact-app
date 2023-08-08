@@ -1,3 +1,4 @@
+import React from "react";
 import { Alert, AlertTitle, Stack } from "@mui/material";
 const AlertComponent = (props) => {
   const { type, title, content } = props;

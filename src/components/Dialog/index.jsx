@@ -6,7 +6,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { useState } from "react";
+import React from "react";
 
 const DialogComponent = (props) => {
   const { open, onClickPrimary, onClickSecondary, title, content, children } =
