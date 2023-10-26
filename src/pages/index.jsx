@@ -14,7 +14,8 @@ const ContactList = () => {
     setIsLoading(true);
     getContacts()
       .then((res) => {
-        const { data } = res.data;
+        const { data } = res.data.data;
+        console.log("vite", data);
         setContacts(data);
         setIsLoading(false);
       })
@@ -63,7 +64,7 @@ const ContactList = () => {
         contacts.length > 0 ? (
           <ListContacts contacts={contacts} onDelete={deleteContactById} />
         ) : (
-          "Something Error"
+          "No contacts"
         )
       ) : (
         <SkeletonList />

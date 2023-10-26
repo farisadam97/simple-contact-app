@@ -1,7 +1,13 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ContactList from "./pages";
 import FormComponent from "./pages/Form";
 import LayoutWrapper from "./components/Layout";
+
+const ProtectedRoute = ({ user, children }) => {
+  if (!user) {
+    return <Navigate to="/sign-in" replace />;
+  }
+};
 
 function App() {
   return (

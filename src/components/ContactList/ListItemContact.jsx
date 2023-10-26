@@ -16,7 +16,7 @@ import DialogComponent from "../Dialog";
 
 const ListItemContact = (prop) => {
   const { data, onDelete } = prop;
-  const name = `${data.firstName} ${data.lastName}`;
+  const name = data.full_name;
   const [openDialog, setOpenDialog] = useState(false);
   const [_anchorUnassignEl, setAnchorUnassignEl] = useState(null);
 
