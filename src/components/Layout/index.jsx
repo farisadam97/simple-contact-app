@@ -1,4 +1,5 @@
 import { Container, styled } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import Navbar from "../Navbar";
 const CustContainer = styled(Container)({
   width: "480px",
@@ -8,9 +9,10 @@ const CustContainer = styled(Container)({
   flexDirection: "column",
 });
 const LayoutWrapper = (prop) => {
+  const location = useLocation();
   return (
     <CustContainer>
-      <Navbar />
+      {!location.pathname.startsWith("/login") && <Navbar />}
       {prop.children}
     </CustContainer>
   );
