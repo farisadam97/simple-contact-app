@@ -10,13 +10,15 @@ import FormComponent from "./pages/Form";
 import LoginComponent from "./pages/Login";
 import LayoutWrapper from "./components/Layout";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
-const ProtectedRoute = ({ user, children }) => {
-  if (!user) {
-    return <Navigate to="/login" replace />;
+const ProtectedRoute = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  console.log("auth", isAuthenticated);
+  if (isAuthenticated) {
+    return <Outlet />;
   }
-
-  return children ? children : <Outlet />;
+  return <Navigate to="/login" replace />;
 };
 
 function App() {
@@ -32,7 +34,7 @@ function App() {
           }
           path="/login"
         />
-        <Route element={<ProtectedRoute user={user} />}>
+        <Route element={<ProtectedRoute />}>
           <Route
             index
             element={

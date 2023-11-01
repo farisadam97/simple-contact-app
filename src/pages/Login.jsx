@@ -10,7 +10,12 @@ import {
   Button,
   Grid,
 } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/authSlice";
+import { useNavigate } from "react-router-dom";
 const LoginComponent = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const methods = useForm({
     defaultValues: {
       username: "",
@@ -24,6 +29,13 @@ const LoginComponent = () => {
     setValue,
     watch,
   } = methods;
+
+  const handleLogin = async (data) => {
+    dispatch(login({ username: "admin" }));
+    console.log("login succesfull");
+    navigate("/");
+  };
+
   return (
     <Container sx={{ height: "100vh", display: "flex", width: "100%" }}>
       <Card
@@ -39,7 +51,7 @@ const LoginComponent = () => {
           <h1>Login</h1>
           <Box>
             <FormProvider {...methods}>
-              <form>
+              <form onSubmit={handleSubmit(handleLogin)}>
                 <Grid container>
                   <Grid item xs={12}>
                     <Typography variant="h6" align="left">
