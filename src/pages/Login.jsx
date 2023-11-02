@@ -10,12 +10,14 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { login } from "../../redux/authSlice";
+import AlertComponent from "../components/Alert";
+import { useDispatch, useSelector } from "react-redux";
+import { loginAsync, logout } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
 const LoginComponent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const error = useSelector((state) => state.auth.error);
   const methods = useForm({
     defaultValues: {
       username: "",
@@ -31,9 +33,12 @@ const LoginComponent = () => {
   } = methods;
 
   const handleLogin = async (data) => {
-    dispatch(login({ username: "admin" }));
-    console.log("login succesfull");
-    navigate("/");
+    try {
+      await dispatch(loginAsync(data));
+      navigate("/");
+    } catch (error) {
+      console.log("Something error");
+    }
   };
 
   return (
@@ -48,6 +53,9 @@ const LoginComponent = () => {
         }}
       >
         <CardContent sx={{ textAlign: "center" }}>
+          {error && (
+            <AlertComponent type={"error"} title={"Error"} content={error} />
+          )}
           <h1>Login</h1>
           <Box>
             <FormProvider {...methods}>
