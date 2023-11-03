@@ -50,17 +50,19 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    addCase(loginAsync.fulfilled, (state, action) => {
-      state.user = action.payload.username;
-      state.token = action.payload.token;
-      state.isAuthenticated = true;
-      state.error = null;
-    }).addCase(loginAsync.rejected, (state, action) => {
-      state.user = null;
-      state.token = null;
-      state.isAuthenticated = false;
-      state.error = action.payload.error;
-    });
+    builder
+      .addCase(loginAsync.fulfilled, (state, action) => {
+        state.user = action.payload.username;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
+        state.error = null;
+      })
+      .addCase(loginAsync.rejected, (state, action) => {
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.error = action.payload.error;
+      });
   },
 });
 
